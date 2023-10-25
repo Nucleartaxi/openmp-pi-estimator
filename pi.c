@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	// loop {number of iterations} [number of threads]
 
 	if(argc<2) {
-		printf("Usage: sumcomp {array size} [number of threads]\n");
+		printf("Usage: pi {array size} [number of threads]\n");
 		exit(1);
 	}
 	
