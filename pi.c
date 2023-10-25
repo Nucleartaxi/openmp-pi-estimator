@@ -13,7 +13,7 @@
 
 int p=1;
 
-void computeHits(int );
+int computeHits(int );
 
 int main(int argc, char *argv[])
 {
@@ -52,7 +52,9 @@ int main(int argc, char *argv[])
 	//dispArray(a,n);
 
 	// 2. compute sum using reduce
-	computeHits(n);
+	int hits = computeHits(n);
+	double pi_estimate = (hits / (double) n) * 4; //hits / n * 4
+	printf("%f\n", pi_estimate);
 
 
 	
@@ -72,7 +74,7 @@ int inCircle(double x, double y) {
 double randomDouble() { //generates a random double between 0 and 1.
 	return rand() / (double) RAND_MAX;
 }
-void computeHits(int n) {
+int computeHits(int n) {
 
 	omp_set_num_threads(p);
 
@@ -94,6 +96,7 @@ void computeHits(int n) {
 
 	// Q) Which thread will have the final hits to print?
 	printf("hits=%d\n",hits);
+	return hits;
 
 }// end computeHits
 
