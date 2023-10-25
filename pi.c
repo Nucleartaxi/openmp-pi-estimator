@@ -23,12 +23,12 @@ int main(int argc, char *argv[])
 	// loop {number of iterations} [number of threads]
 
 	if(argc<2) {
-		printf("Usage: pi {array size} [number of threads]\n");
+		printf("Usage: pi n [number of threads]\n");
 		exit(1);
 	}
 	
 	n = atoll(argv[1]);
-	printf("Debug: array size = %d \n",n);
+	printf("Debug: n= %d \n",n);
 
 	if(argc==3) {
 		p = atoi(argv[2]);
