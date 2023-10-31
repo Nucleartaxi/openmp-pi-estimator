@@ -2,6 +2,10 @@
  * Author: Ananth Kalyanaraman
  * Institution: Washington State University
  * Disclaimer: Use at your own risk!
+ *
+ * Alex Shirk & Clancy Andrews
+ * Cpts 411 
+ * Fall 2023
  * */
 
 #include <stdio.h>
@@ -11,7 +15,7 @@
 #include <math.h>
 #include <assert.h>
 
-int p=1;
+#define PI 3.141592653589793238462643383279502884197 //https://www.britannica.com/science/pi-mathematics
 
 int computeHits(int );
 
@@ -38,28 +42,34 @@ int main(int argc, char *argv[])
 
 	omp_set_num_threads(p);
 
-	#pragma omp parallel
-	{
-		assert(p==omp_get_num_threads());
-		//printf("Debug: number of threads set = %d\n",omp_get_num_threads());
+	for(n = 1024; n <=1048576;n = n*2) {
 
-		int rank = omp_get_thread_num();
-		printf("Rank=%d: my world has %d threads\n",rank,p);
-	}  // end of my omp parallel region
+		#pragma omp parallel
+		{
+			assert(p==omp_get_num_threads());
+			//printf("Debug: number of threads set = %d\n",omp_get_num_threads());
 
-	double time = omp_get_wtime();
+			int rank = omp_get_thread_num();
+			printf("Rank=%d: my world has %d threads\n",rank,p);
+		}  // end of my omp parallel region
 
-	//dispArray(a,n);
+		double time = omp_get_wtime();
 
-	// 2. compute sum using reduce
-	int hits = computeHits(n);
-	double pi_estimate = (hits / (double) n) * 4; //hits / n * 4
-	printf("%f\n", pi_estimate);
+		//dispArray(a,n);
 
+		// 2. compute sum using reduce
+		int hits = computeHits(n);
+		double pi_estimate = (hits / (double) n) * 4; //hits / n * 4
+		printf("%f\n", pi_estimate);
 
-	
-	time = omp_get_wtime() - time;
-	printf("Total time = %f seconds (using %d threads)\n ", time, p);
+		//Difference between PI and the estimated value
+		int diff = abs(PI - pi_estimate);
+
+		time = omp_get_wtime() - time;
+
+		//printf("Total time = %f seconds (using %d threads)\n ", time, p);
+		printf("Threads: %d\nDarts: %d\nDifference: %f\nTime: %f\n\n",p,n,diff,time);
+		}
 
 	return 0;
 }
@@ -68,12 +78,14 @@ int main(int argc, char *argv[])
 /* This function computes the sum of the n elements in array a, in parallel (across p threads).
  */
 int inCircle(double x, double y) {
-	//(x-a)^2 + (y-b)^2 = r^2, a, b, and r are .5
+	//(x-a)^2 + (y-b)^2 = r^2; a, b, and r are .5
 	return (x - 0.5) * (x - 0.5) + (y - 0.5) * (y - 0.5) < 0.5 * 0.5;
 }
+
 double randomDouble() { //generates a random double between 0 and 1.
 	return rand() / (double) RAND_MAX;
 }
+
 int computeHits(int n) {
 
 	omp_set_num_threads(p);
