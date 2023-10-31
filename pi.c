@@ -17,6 +17,8 @@
 
 #define PI 3.141592653589793238462643383279502884197 //https://www.britannica.com/science/pi-mathematics
 
+int p = 1;
+
 int computeHits(int );
 
 int main(int argc, char *argv[])
@@ -63,7 +65,7 @@ int main(int argc, char *argv[])
 		printf("%f\n", pi_estimate);
 
 		//Difference between PI and the estimated value
-		int diff = abs(PI - pi_estimate);
+		double diff = abs(PI - pi_estimate);
 
 		time = omp_get_wtime() - time;
 
