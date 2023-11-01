@@ -23,15 +23,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 \break
 
-#Introduction
+# Introduction
 
-|       
+|       For this project, our goal was to use a multithreaded program to approximate the value of $\pi$. Given a unit square with center at $(0.5,0.5)$, overlay a unit circle in the unit square with origin at $(0.5,0.5)$. From there, we can randomly select a coordinate inside the unit square (the same idea as throwing a dart at the square). If the coordinates are located inside the unit circle, then we can increment the number of hits by one. If the coordinates are not located inside the unit circle, then we do not increment the number of hits. It is worth noting that the coordinates are always located inside the unit square. Letting $n$ be the number of random coordinates generated and $h$ be the number of those generated coordinates also being inside the unit circle, we can use the following equation to approximate $\pi$:
+\begin{align}
+\pi = \frac{4h}{n}
+\end{align}
+
 
 \bigbreak
 
 # Analysis
 
-|     
+|       For comparing the estimated value of $\pi$ with the actual value, we used $$\pi = 3.141592653589793238462643383279502884197$$ as the actual value. We got this number from the following webpage: [https://www.britannica.com/science/pi-mathematics](https://www.britannica.com/science/pi-mathematics).
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 #Libraries
@@ -40,12 +44,32 @@ library(knitr)
 
 #Import data for analysis
 df = read.csv2("output.csv", header = FALSE, sep = ",")
-
 colnames(df) = c("Pi","P", "N", "Difference", "Time")
 
+#Extract Serial Time from Data
+serial_time = subset(df, P == 1)$Time
+
+#Get the parallel times for each P value
+parallel_time = data.frame(matrix(ncol = length(unique(df$P)) - 1, nrow = 11))
+colnames(parallel_time) = c("1", "2", "4", "8")
+
+for (i in colnames(parallel_time)) {
+  p_value = as.numeric(i)
+  data = df$Time[df$P == p_value]
+  parallel_time[, i] = data
+}
+
+#Calculate the speed up
+speedup= data.frame(matrix(ncol = length(unique(df$P)) - 1, nrow = 11))
+colnames(speedup) = c("1", "2", "4", "8")
+
+for (i in colnames(speedup)) {
+  speedup[,i] = as.numeric(serial_time)/as.numeric(parallel_time[,i])
+}
+
+row.names(speedup) = unique(df$N)
 
 
-#kable(df, format = "markdown")
 ```
 
 \break
@@ -60,8 +84,32 @@ library(knitr)
 
 #Import data for analysis
 df = read.csv2("output.csv", header = FALSE, sep = ",")
-
 colnames(df) = c("Pi","P", "N", "Difference", "Time")
+
+#Extract Serial Time from Data
+serial_time = subset(df, P == 1)$Time
+
+#Get the parallel times for each P value
+parallel_time = data.frame(matrix(ncol = length(unique(df$P)) - 1, nrow = 11))
+colnames(parallel_time) = c("1", "2", "4", "8")
+
+for (i in colnames(parallel_time)) {
+  p_value = as.numeric(i)
+  data = df$Time[df$P == p_value]
+  parallel_time[, i] = data
+}
+
+#Calculate the speed up
+speedup= data.frame(matrix(ncol = length(unique(df$P)) - 1, nrow = 11))
+colnames(speedup) = c("1", "2", "4", "8")
+
+for (i in colnames(speedup)) {
+  speedup[,i] = as.numeric(serial_time)/as.numeric(parallel_time[,i])
+}
+
+row.names(speedup) = unique(df$N)
+
+
 ```
 
 
