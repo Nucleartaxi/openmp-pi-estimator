@@ -44,6 +44,9 @@ int main(int argc, char *argv[])
 
 	omp_set_num_threads(p);
 
+	//Temp dump file
+	FILE *output = fopen("output.csv", "a");
+	
 	for(n = 1024; n <=1048576;n = n*2) {
 
 		#pragma omp parallel
@@ -52,7 +55,7 @@ int main(int argc, char *argv[])
 			//printf("Debug: number of threads set = %d\n",omp_get_num_threads());
 
 			int rank = omp_get_thread_num();
-			printf("Rank=%d: my world has %d threads\n",rank,p);
+			//printf("Rank=%d: my world has %d threads\n",rank,p);
 		}  // end of my omp parallel region
 
 		double time = omp_get_wtime();
@@ -62,16 +65,18 @@ int main(int argc, char *argv[])
 		// 2. compute sum using reduce
 		int hits = computeHits(n);
 		double pi_estimate = (hits / (double) n) * 4; //hits / n * 4
-		printf("%f\n", pi_estimate);
 
 		//Difference between PI and the estimated value
-		double diff = abs(PI - pi_estimate);
+		double diff = fabs(PI - pi_estimate);
 
 		time = omp_get_wtime() - time;
 
 		//printf("Total time = %f seconds (using %d threads)\n ", time, p);
-		printf("Threads: %d\nDarts: %d\nDifference: %f\nTime: %f\n\n",p,n,diff,time);
+		printf("PI Estimate: %0.20f\nThreads: %d\nDarts: %d\nDifference: %f\nTime: %f\n\n",pi_estimate,p,n,diff,time);
+		fprintf(output, "%0.20f,%d,%d,%f,%f\n",pi_estimate,p,n,diff,time);
 		}
+
+	fclose(output);
 
 	return 0;
 }
@@ -109,7 +114,7 @@ int computeHits(int n) {
 	// Q) The hits variable is being written onto 
 
 	// Q) Which thread will have the final hits to print?
-	printf("hits=%d\n",hits);
+	//printf("hits=%d\n",hits);
 	return hits;
 
 }// end computeHits

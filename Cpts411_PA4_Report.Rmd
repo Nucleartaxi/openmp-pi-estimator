@@ -1,0 +1,73 @@
+---
+title: "Cpts 411 Programming Project 4"
+author: 
+     - "Clancy Andrews"
+     - "Alex Shirk"
+header-includes:
+   - \usepackage{amssymb}
+   - \usepackage{amsmath}
+   - \usepackage{graphicx,float}
+   - \usepackage{natbib}
+   - \usepackage{geometry}
+   - \usepackage{xcolor}
+   - \usepackage{courier}
+output:
+  pdf_document: default
+fontsize: 11pt
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\break
+
+#Introduction
+
+|       
+
+\bigbreak
+
+# Analysis
+
+|     
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Libraries
+library(ggplot2)
+library(knitr)
+
+#Import data for analysis
+df = read.csv2("output.csv", header = FALSE, sep = ",")
+
+colnames(df) = c("Pi","P", "N", "Difference", "Time")
+
+
+
+#kable(df, format = "markdown")
+```
+
+\break
+# Analysis Code
+
+The following is the code used for analyzing the collected data from the program:
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
+#Libraries
+library(ggplot2)
+library(knitr)
+
+#Import data for analysis
+df = read.csv2("output.csv", header = FALSE, sep = ",")
+
+colnames(df) = c("Pi","P", "N", "Difference", "Time")
+```
+
+
+\break
+# Session Info
+```{r}
+sessionInfo()
+```
+
