@@ -51,10 +51,9 @@ int main(int argc, char *argv[])
 
 	// Calculate hits and approximation for pi
 	int hits = computeHits(n/p);
-
 	time = omp_get_wtime() - time;
 
-	double pi_estimate = (hits / (double) n) * 4; //hits / n * 4
+	double pi_estimate = (hits / (double) (n/p)) * 4; //hits / n * 4
 
 	//Difference between PI and the estimated value
 	double diff = fabs(PI - pi_estimate);
@@ -88,9 +87,10 @@ int computeHits(int n) {
 		if (inCircle(x, y)) {
 			hits++;
 		}
-		//printf("i=%d, n=%d, hits=%d,a[i]=%d\n",i,n,hits,a[i]);
+		
 		//fflush(stdout);
 	} // end for
+	printf("i=%d, n=%d, hits=%d\n",i,n,hits);
 
 	return hits;
 
