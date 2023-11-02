@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 	double time = omp_get_wtime();
 
 	// Calculate hits and approximation for pi
-	int hits = computeHits(n);
+	int hits = computeHits(n/p);
 
 	time = omp_get_wtime() - time;
 
