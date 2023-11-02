@@ -78,8 +78,6 @@ double randomDouble() { //generates a random double between 0 and 1.
 
 int computeHits(int n) {
 
-	omp_set_num_threads(p);
-
 	int i;
 	int hits=0;
 
