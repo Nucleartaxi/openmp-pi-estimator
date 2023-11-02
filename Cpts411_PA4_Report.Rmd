@@ -35,7 +35,7 @@ The data was collected on a personal computer, which had an Intel i9-10900K CPU 
 
 # Analysis
 
-|       For comparing the estimated value of $\pi$ with the actual value, we used $$\pi = 3.141592653589793238462643383279502884197$$ as the actual value. We got this number from the following webpage: [https://www.britannica.com/science/pi-mathematics](https://www.britannica.com/science/pi-mathematics). Below we can observe the speedup table where the values of $n$ are the row labels and the values of $p$ are the column labels.
+|       For comparing the estimated value of $\pi$ with the actual value, we used $$\pi = 3.141592653589793238462643383279502884197$$ as the actual value. We got this number from the following webpage: [https://www.britannica.com/science/pi-mathematics](https://www.britannica.com/science/pi-mathematics). Below we can observe the speedup table where the values of $n$ are the row labels and the values of $p$ are the column labels. The speedup of each $n$, $p$ pair in the table is relative to the serial runtime of the program.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 #Libraries
@@ -98,20 +98,20 @@ row.names(pi_diff) = unique(df$N)
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-kable(speedup, row.names = TRUE, caption = "Speed up for corrsponding $n$ (rows) and $p$ (columns) values.")
+kable(speedup, row.names = TRUE, caption = "Speed up for corresponding $n$ (rows) and $p$ (columns) values.")
 ```
 
-Using our previously presented true value of $\pi$ to compare, we can observe the estimated values of $\pi$ approximated by our program in the table below.
+We can see that the speedup for the number of threads being 1 and 2 is poor. However, we can see that using 4 or more threads has improved speedup. We can now analyze the precision of estimation of the value of $\pi$. Using our previously presented true value of $\pi$ to compare, we can observe the estimated values of $\pi$ approximated by our program in the table below.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-kable(pi, row.names = TRUE, caption = "Estimations for the value of $\\pi$ for corrsponding $n$ (rows) and $p$ (columns) values.")
+kable(pi, row.names = TRUE, caption = "Estimations for the value of $\\pi$ for corresponding $n$ (rows) and $p$ (columns) values.")
 ```
 From observation, we can see that as $n$ increased in size, our approximations would get closer to the true value of $\pi$. The next table shows the difference between the true and estimated $\pi$ values at each corresponding $n$ and $p$ value.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-kable(pi_diff, row.names = TRUE, caption = "Differences in the true value versus the estimated value of $\\pi$ for corrsponding $n$ (rows) and $p$ (columns) values.")
+kable(pi_diff, row.names = TRUE, caption = "Differences in the true value versus the estimated value of $\\pi$ for corresponding $n$ (rows) and $p$ (columns) values.")
 ```
-It is more evident now that as we increase $n$ and $p$ together, we get a closer approximation to the true value of $\pi$.
+It is more evident now that as we increase $n$ and $p$ together, we get a closer approximation to the true value of $\pi$. As a result of this analysis, we can expect that the speedup as we increase $p$ will improve and increasing both $n$ and $p$ together will result in a more accurate approximation of $\pi$.
 
 \break
 # Analysis Code
