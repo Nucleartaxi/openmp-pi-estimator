@@ -29,18 +29,19 @@ knitr::opts_chunk$set(echo = TRUE)
 \begin{align}
 \pi = \frac{4h}{n}
 \end{align}
-
+The data was collected on a personal computer, which had an Intel i9-10900K CPU at 3.70GHz, containing 10 cores and 20 logical processors (threads).
 
 \bigbreak
 
 # Analysis
 
-|       For comparing the estimated value of $\pi$ with the actual value, we used $$\pi = 3.141592653589793238462643383279502884197$$ as the actual value. We got this number from the following webpage: [https://www.britannica.com/science/pi-mathematics](https://www.britannica.com/science/pi-mathematics).
+|       For comparing the estimated value of $\pi$ with the actual value, we used $$\pi = 3.141592653589793238462643383279502884197$$ as the actual value. We got this number from the following webpage: [https://www.britannica.com/science/pi-mathematics](https://www.britannica.com/science/pi-mathematics). Below we can observe the speedup table where the values of $n$ are the row labels and the values of $p$ are the column labels.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 #Libraries
 library(ggplot2)
 library(knitr)
+library(stats)
 
 #Import data for analysis
 df = read.csv2("output.csv", header = FALSE, sep = ",")
@@ -69,8 +70,48 @@ for (i in colnames(speedup)) {
 
 row.names(speedup) = unique(df$N)
 
+#Precision data
+pi = data.frame(matrix(ncol = length(unique(df$P)), nrow = 11))
+colnames(pi) = c("1", "2", "4", "8", "16")
 
+for (i in colnames(pi)) {
+  p_value = as.numeric(i)
+  data = df$Pi[df$P == p_value]
+  data = round(as.numeric(data),5)
+  pi[, i] = data
+}
+row.names(pi) = unique(df$N)
+
+#Difference in the pi values
+pi_diff = data.frame(matrix(ncol = length(unique(df$P)), nrow = 11))
+colnames(pi_diff) = c("1", "2", "4", "8", "16")
+
+for (i in colnames(pi)) {
+  p_value = as.numeric(i)
+  data = df$Difference[df$P == p_value]
+  data = round(as.numeric(data),5)
+  pi_diff[, i] = data
+}
+row.names(pi_diff) = unique(df$N)
 ```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+kable(speedup, row.names = TRUE, caption = "Speed up for corrsponding $n$ (rows) and $p$ (columns) values.")
+```
+
+Using our previously presented true value of $\pi$ to compare, we can observe the estimated values of $\pi$ approximated by our program in the table below.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+kable(pi, row.names = TRUE, caption = "Estimations for the value of $\\pi$ for corrsponding $n$ (rows) and $p$ (columns) values.")
+```
+From observation, we can see that as $n$ increased in size, our approximations would get closer to the true value of $\pi$. The next table shows the difference between the true and estimated $\pi$ values at each corresponding $n$ and $p$ value.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+kable(pi_diff, row.names = TRUE, caption = "Differences in the true value versus the estimated value of $\\pi$ for corrsponding $n$ (rows) and $p$ (columns) values.")
+```
+It is more evident now that as we increase $n$ and $p$ together, we get a closer approximation to the true value of $\pi$.
 
 \break
 # Analysis Code
@@ -81,6 +122,7 @@ The following is the code used for analyzing the collected data from the program
 #Libraries
 library(ggplot2)
 library(knitr)
+library(stats)
 
 #Import data for analysis
 df = read.csv2("output.csv", header = FALSE, sep = ",")
@@ -109,7 +151,36 @@ for (i in colnames(speedup)) {
 
 row.names(speedup) = unique(df$N)
 
+#Precision data
+pi = data.frame(matrix(ncol = length(unique(df$P)), nrow = 11))
+colnames(pi) = c("1", "2", "4", "8", "16")
 
+for (i in colnames(pi)) {
+  p_value = as.numeric(i)
+  data = df$Pi[df$P == p_value]
+  data = round(as.numeric(data),5)
+  pi[, i] = data
+}
+row.names(pi) = unique(df$N)
+
+#Difference in the pi values
+pi_diff = data.frame(matrix(ncol = length(unique(df$P)), nrow = 11))
+colnames(pi_diff) = c("1", "2", "4", "8", "16")
+
+for (i in colnames(pi)) {
+  p_value = as.numeric(i)
+  data = df$Difference[df$P == p_value]
+  data = round(as.numeric(data),5)
+  pi_diff[, i] = data
+}
+row.names(pi_diff) = unique(df$N)
+
+#Tables for speedup and pi_estimates
+kable(speedup, row.names = TRUE, caption = "Speed up for corrsponding $n$ (rows) and $p$ (columns) values.")
+
+kable(pi, row.names = TRUE, caption = "Estimations for the value of $\\pi$ for corrsponding $n$ (rows) and $p$ (columns) values.")
+
+kable(pi_diff, row.names = TRUE, caption = "Differences in the true value versus the estimated value of $\\pi$ for corrsponding $n$ (rows) and $p$ (columns) values.")
 ```
 
 
